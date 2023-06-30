@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hospital</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+  <style>
+    *{ 
+   margin: 0;
+   padding: 0;
+  }
+   #nav-li{
+    height: 20px;
+   }
+  #img-nav{
+    margin-bottom: 4px;
+    width: 20px;
+    height: 20px;
+  }
+  #nav-h4{
+    margin-left: 3px;
+    float: right;
+    font-size: 23px;
+  }
+  </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-sm bg-info navbar-dark">
+      <ul class="navbar-nav" id="nav-ul" >
+       <li class="nav-item active" id="nav-li">
+         <a class="nav-link" href="#" id="nav-a"><img src="Images/hospital.png" alt="" id="img-nav"><h4 id="nav-h4">HOSPITAL.COM</h4></a>
+       </li>
+       <li class="nav-item" id="nav-home">
+         <a class="nav-link" href="index.html">Home</a>
+         </li>
+      <li class="nav-item">
+         <a class="nav-link" href="index.html">Gallery</a>
+       </li>
+      <li class="nav-item">
+         <a class="nav-link" href="register.html">Register</a>
+       </li>
+       <li class="nav-item">
+      <a class="nav-link" href="Manage.html">Manage</a>
+     </li>
+     <li class="nav-item">
+     <a class="nav-link" href="index.html">Contact Us</a>
+      </li>
+      </ul>
+     </nav>
+ <!-- nav section end-->
+   <div class="container">
+    <div class="row mt-2" id="data"></div>
+     <!-- The Modal -->
+     <div class="modal" id="myModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Patient Profile</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+
+          <!-- Modal body -->
+          <div class="modal-body">
+            <form action="" method="post" name="frm" onsubmit=" updateuser(event)">
+              <div class="form-group">
+                  <label for="">Patient Name :</label>
+                  <input type="text" id="name" class="form-control">
+              </div>
+              <div class="form-group">
+                  <label for="">Email :</label>
+                  <input type="text" id="email" class="form-control">
+              </div>
+              <div class="form-group">
+                  <label for="">Mobile :</label>
+                  <input type="text" id="mob" class="form-control">
+              </div>
+              <div class="form-group">
+                  <label for="">Address :</label>
+                  <input type="text" id="address" class="form-control">
+              </div>
+              <div class="form-group">
+                  <label for=""> DOB :</label>
+                  <input type="text" id="dob" class="form-control">
+              </div>
+              <div class="form-group">
+                  <label for=""> Bill/Payment :</label>
+                  <input type="text" id="bill" class="form-control">
+              </div>
+              <div class="form-group">
+                  <input type="submit" value="Update" class="btn btn-primary">
+              </div>
+  
+          </form>
+          </div>
+            <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
+          <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+          <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+          <script>
+            function  showpatient() {
+             let str = "";
+              let getdata = localStorage.getItem("Hospital")
+              if (getdata != null) {
+                arr = JSON.parse(getdata)
+              } else {
+                arr = []
+              }
+              arr.forEach((items, index) => {
+                str += `<div class="col-sm-4 mt-2">
+            <div class="card">
+                          <div class="card-body">
+                            <span>Name :</span>
+                            <h4 >${items.Name}</h4>
+                            <span>Email :</span>
+                            <h4 >${items.Email}</h4>
+                            <span>Contact :</span>
+                            <h4 >${items.Phone}</h4>
+                            <span>Address :</span>
+                            <h4 >${items.Address}</h4>
+                            <span>Dte of birth :</span>
+                            <h4 >${items.Birthdate}</h4>
+                            <span>Payment :</span>
+                            <h4 >${items.Payment}</h4>
+                            <button class="btn btn-info"  data-toggle="modal" data-target="#myModal"
+                             onclick="edituser(${index})">Edit</button>
+                            <button class="btn btn-danger" onclick="deleteuser(${index})">
+                              Delete</button>
+                          </div>  
+                           </div>
+            </div>`
+              })
+              document.getElementById("data").innerHTML = str;
+            }
+            showpatient()
+
+            //  deleteuser
+
+            function deleteuser(did) {
+              let getdata = localStorage.getItem("Hospital")
+              if (getdata != null) {
+                arr = JSON.parse(getdata)
+              } else {
+                arr = []
+              }
+              let newarr = arr.filter((items, index) => {
+                return did != index
+              })
+              console.log(newarr)
+              localStorage.setItem("Hospital", JSON.stringify(newarr))
+              showpatient()
+            }
+
+            // editEmployee
+
+
+            let x = "";
+            function edituser(uid) {
+              x = uid;
+              let getdata = localStorage.getItem("Hospital")
+              if (getdata != null) {
+                arr = JSON.parse(getdata)
+              } else {
+                arr = []
+              }
+              let newarr = arr.filter((items, index) => {
+                return uid === index
+              })
+              document.getElementById("name").value = newarr[0].Name;
+              document.getElementById("email").value = newarr[0].Email;
+              document.getElementById("mob").value = newarr[0].Phone;
+              document.getElementById("address").value = newarr[0].Address;
+              document.getElementById("dob").value = newarr[0].Birthdate;
+              document.getElementById("bill").value = newarr[0].Payment;
+            }
+
+            //updateuser
+
+
+            function updateuser(event){
+              event.preventDefault();
+              let patientname = document.getElementById("name").value
+              let patientemail = document.getElementById("email").value
+              let patientmobile = document.getElementById("mob").value
+              let patientadd = document.getElementById("address").value
+              let patientdob = document.getElementById("dob").value
+              let patientbills = document.getElementById("bill").value
+              let getdata = localStorage.getItem("Hospital")
+              if (getdata != null) {
+                arr = JSON.parse(getdata)
+              } else {
+                arr = []
+              }
+              arr[x].Name = patientname;
+              arr[x].Email = patientemail;
+              arr[x].Phone = patientmobile;
+              arr[x].Address = patientadd;
+              arr[x].Birthdate = patientdob;
+              arr[x].Payment = patientbills;
+              localStorage.setItem("Hospital",JSON.stringify(arr))
+              window.location = "Manage.html"
+            }
+          </script>
+</body>
+
+</html>
